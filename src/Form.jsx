@@ -2,6 +2,7 @@ import React from 'react'
 import Label from './Label'
 import Input from './Input'
 import Button from './Button'
+import Password from './Password'
 import { useState } from 'react'
 
 function Form() {
@@ -21,17 +22,26 @@ function Form() {
         e.preventDefault()
         if((errph != true && errPass != true && errEmail != true && errUname != true ) && (fdata.uname != 0 && fdata.email.length != 0 && fdata.password.length != 0 && fdata.mobnum.length != 0)  ) 
         
-         console.log(fdata)
+         console.log(fdata);
+         setFData({
+            uname: "",
+       email: "",
+       password: "",
+       mobnum: ""
+       })
+       
     }
     function handlechange(e) {
         const { name, value } = e.target;
         setFData({ ...fdata, [name]: value })
+        
+       
 
     }
     function handleErrPh(e) {
 
 
-        var regExp = /^(0|91)?[6-9][0-9]{9}$/;
+        var regExp = /^[0-9]{10}$/;
         let inputP = regExp.test(e.target.value)
         if (!inputP) {
             setErrPh(true)
@@ -42,7 +52,7 @@ function Form() {
     }
 
     function handleErrPass(e) {
-        var regex = /^(?=.*[a-z])(?=.*[A-Z])[a-zA-Z\d]{6,12}$/;
+        var regex = /^(?=.*[a-z])(?=.*[A-Z])[a-zA-Z\d]{6,}$/;
         let inputP = regex.test(e.target.value)
         if (!inputP) {
             setErrPass(true)
@@ -81,18 +91,18 @@ function Form() {
        
             <div className='flex flex-col items-center block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100  '>
             <h1 className='mb-4 text-4xl font-extrabold '>REGISTER NOW </h1>
-                <form onSubmit={(e) => { handlesumbit(e) }}>
+                <form onSubmit={(e) => { handlesumbit(e) }} noValidate>
                     <Label label="NAME" />
-                    <Input type="text" name="uname" onchange={(e) => { handlechange(e); handleErrName(e) }} />
+                    <Input type="text" name="uname" value ={fdata.uname} onchange={(e) => { handlechange(e); handleErrName(e) }} />
                     {errUname && <p className='text-red-500'>Enter valid name</p>}
                     <Label label="EMAIL" />
-                    <Input type="email" name="email" onchange={(e) => { handlechange(e); handleErrEmail(e) }} />
+                    <Input type="email" name="email" value ={fdata.email} onchange={(e) => { handlechange(e); handleErrEmail(e) }} />
                     {errEmail && <p className='text-red-500'>Enter valid Email</p>}
                     <Label label="PASSWORD" />
-                    <Input type="password" name="password" onchange={(e) => { handlechange(e); handleErrPass(e) }} />
+                    <Password  name="password" value ={fdata.password} max ={12} onchange={(e) => { handlechange(e); handleErrPass(e) }} />
                     {errPass && <p className='text-red-500'>Enter atleast one upper and lower case length above 6</p>}
                     <Label label="MOBILE NUMBER" />
-                    <Input type="text" name="mobnum" onchange={(e) => { handlechange(e); handleErrPh(e) }} />
+                    <Input type="text" name="mobnum" max={10}  value ={fdata.mobnum} onchange={(e) => { handlechange(e); handleErrPh(e) }} />
                     {errph && <p className='text-red-500'>Enter valid Phone No</p>}
                     <Button type="submit">SUBMIT</Button>
                 </form>
